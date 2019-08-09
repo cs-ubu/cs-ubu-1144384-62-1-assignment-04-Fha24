@@ -98,7 +98,7 @@ class _AppHomePageState extends State<AppHomePage> {
                   ]
                 ),
             subtitle: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text('Price: ${student["price"]}'),
                 Text('Size: ${student["size"]}'),
