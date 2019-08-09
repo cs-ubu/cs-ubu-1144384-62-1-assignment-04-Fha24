@@ -22,7 +22,7 @@ class CSUBUFlutterApp extends StatelessWidget {
     return MaterialApp(
       title: appTitle,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
         //fontFamily: 'Roboto'
       ),
       home: AppHomePage(title: appTitle),
@@ -52,7 +52,7 @@ class _AppHomePageState extends State<AppHomePage> {
   var _page = 0;
 
   _getStudents() async {
-    var url = 'http://cs.sci.ubu.ac.th:7512/topic-1/Fha_Shopdress/_search?from=${_page*10}&size=10';
+    var url = 'http://cs.sci.ubu.ac.th:7512/topic-1/Fha_Shopdress/_search?from=${_page*5}&size=5';
     const headers = { 'Content-Type': 'application/json; charset=utf-8' };
     const query = { 'query': { 'match_all': {} } };
     final response = await http.post(url, headers: headers, body: json.encode(query));
@@ -82,13 +82,14 @@ class _AppHomePageState extends State<AppHomePage> {
   Widget studentWidgets(BuildContext context) {
     return ListView.separated(
         itemCount: _students.length,
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10),
         separatorBuilder: (context, i) => const Divider(),
         itemBuilder: (context, i) {
           final student = _students[i];
           var sum = 0;
           student['price'].runes.forEach((c) { sum += c; });
           return ListTile(
+            contentPadding: EdgeInsets.all(10),
             title: Row(
                   children: <Widget>[
                     // Image.asset('assets/images/csubu-bw.png', width: 48, height: 48),
@@ -96,11 +97,14 @@ class _AppHomePageState extends State<AppHomePage> {
                     Expanded(child: Text(student["detial"]))
                   ]
                 ),
-            subtitle: Column(
+            subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('Price: ${student["price"]}'),
-                Text('Size: ${student["size"]}')
+                Text('Size: ${student["size"]}'),
+                Icon(Icons.share, color: Colors.black26),
+                Icon(Icons.thumb_up, color: Colors.lightBlue),
+                Icon(Icons.favorite, color: Colors.pink)
               ]
              )
           );
@@ -116,7 +120,7 @@ class _AppHomePageState extends State<AppHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title) ,
       ),
       body: Center(
         child: (_loading)? loadingWidget(context) : studentWidgets(context),
